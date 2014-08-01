@@ -33,15 +33,18 @@
 %>
 
 <p>Hello!
-    <a href="<%= userService.createLoginURL(request.getRequestURI()) %>">Sign in</a>
-    to include your name with greetings you post.</p>
+    <a href="<%= userService.createLoginURL(request.getRequestURI()) %>">Sign in</a>.</p>
 
 <%
 } else {
         pageContext.setAttribute("user", user);
 %>
-<p>Hello, ${fn:escapeXml(user.nickname)}! (You can
-    <a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>.)</p>
+<p>Hello, ${fn:escapeXml(user.nickname)}! (<a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>)</p>
+
+<% if (request.getParameter("msg") != null) { %>
+<font color="red"><b><%= request.getParameter("msg") %></b></font>
+<% } %>
+
 
 
 <%
@@ -97,7 +100,7 @@
 	}
 	
 %>
-<p>You are a member of the <span title="<%= family.getProperty("token")%>"><b><i><%= family.getProperty("name") %></i></b></span> family.
+<p>You are a member of the <b><i><%= family.getProperty("name") %></i></b> family.  Give your family members this token to join: <b><%= family.getProperty("token")%></b>.
 
 <p>Other members of your family:</p>
 
