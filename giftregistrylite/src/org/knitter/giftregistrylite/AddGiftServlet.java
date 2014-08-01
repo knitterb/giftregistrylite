@@ -14,13 +14,21 @@ import com.google.appengine.api.datastore.Link;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.datastore.Query.Filter;
+import static com.google.appengine.api.datastore.FetchOptions.Builder.*;
 
 public class AddGiftServlet extends HttpServlet {
 
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8190951814685584912L;
 
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
@@ -35,7 +43,8 @@ public class AddGiftServlet extends HttpServlet {
 	    
 	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	    Query q = new Query("FamilyMember");
-		q.addFilter("user", FilterOperator.EQUAL, user);
+		Filter f = new FilterPredicate("user", FilterOperator.EQUAL, user);
+	    q.setFilter(f);
 		PreparedQuery pq = datastore.prepare(q);
 		
 		Entity familymember=pq.asSingleEntity();
@@ -62,16 +71,17 @@ public class AddGiftServlet extends HttpServlet {
 	    // wait until the record shows up
 	    int cnt=0; int limit=10;
 	    while (cnt < 1 && limit-- > 0) {
-	    	Query qgift =  new Query("Gift")
-            	.addFilter(Entity.KEY_RESERVED_PROPERTY,
-                       Query.FilterOperator.EQUAL,
-                       giftkey);
+	    	Query qgift =  new Query("Gift");
+			Filter f1 = new FilterPredicate(Entity.KEY_RESERVED_PROPERTY,
+                    Query.FilterOperator.EQUAL,
+                    giftkey);
+			qgift.setFilter(f1);
     		PreparedQuery pqgift = datastore.prepare(qgift);
-			cnt = pqgift.countEntities();
+			cnt = pqgift.countEntities(withLimit(10));
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+		
 				e.printStackTrace();
 			}
 	    }

@@ -11,13 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import static com.google.appengine.api.datastore.FetchOptions.Builder.*;
 
 public class MakeFamilyMemberServlet extends HttpServlet {
 
@@ -41,7 +43,8 @@ public class MakeFamilyMemberServlet extends HttpServlet {
 	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		
 	    Query qf = new Query("Family");
-	    qf.addFilter("name", FilterOperator.EQUAL, req.getParameter("f"));
+		Filter f1 = new FilterPredicate("name", FilterOperator.EQUAL, req.getParameter("f"));
+		qf.setFilter(f1);
 	    PreparedQuery pq = datastore.prepare(qf);
 	    Entity family=pq.asSingleEntity();
 	    
@@ -57,17 +60,17 @@ public class MakeFamilyMemberServlet extends HttpServlet {
 		    int cnt=0; int limit=10;
 		    while (cnt < 1 && limit-- > 0) {
 		    	Query qf1 = new Query("Family");
-		    	qf1.addFilter("name", FilterOperator.EQUAL, req.getParameter("f"));
+		    	Filter f11 = new FilterPredicate("name", FilterOperator.EQUAL, req.getParameter("f"));
+		    	qf1.setFilter(f11);
 		    	PreparedQuery pq1 = datastore.prepare(qf1);
-				cnt = pq1.countEntities();
+				cnt = pq1.countEntities(withLimit(10));
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		    }
-		    if (family == null) {
+		    if (cnt == 0) {
 		    	resp.sendRedirect("/");
 		    	return;
 		    }
@@ -90,13 +93,14 @@ public class MakeFamilyMemberServlet extends HttpServlet {
 	    int cnt=0; int limit=10;
 	    while (cnt < 1 && limit-- > 0) {
 	    		Query q = new Query("FamilyMember");
-	    		q.addFilter("user", FilterOperator.EQUAL, user);
+		    	Filter f11 = new FilterPredicate("user", FilterOperator.EQUAL, user);
+		    	q.setFilter(f11);
+
 	    		PreparedQuery pq1 = datastore.prepare(q);
-				cnt = pq1.countEntities();
+				cnt = pq1.countEntities(withLimit(10));
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 	    }
