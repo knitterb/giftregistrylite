@@ -1,0 +1,11 @@
+<!-- Indices written at Wed, 30 Jul 2014 16:18:35 PDT -->
+
+<datastore-indexes>
+
+    <!-- Used 4 times in query history -->
+    <datastore-index kind="Gift" ancestor="true" source="auto">
+        <property name="priority" direction="asc"/>
+        <property name="__key__" direction="desc"/>
+    </datastore-index>
+
+</datastore-indexes>
