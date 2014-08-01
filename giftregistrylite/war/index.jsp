@@ -66,7 +66,17 @@
 	pq = datastore.prepare(q);
 	
 	Entity familymember=pq.asSingleEntity();
-	if (familymember == null) {
+	
+	Entity family = null;
+	if (familymember != null) {
+		q=new Query("Family");
+		q.addFilter(Entity.KEY_RESERVED_PROPERTY, Query.FilterOperator.EQUAL, 
+				familymember.getProperty("family"));
+		pq = datastore.prepare(q);
+		family=pq.asSingleEntity();
+	}
+	
+	if (familymember == null || family == null) {
 %>
 <p>You are not a FamilyMember</p>
 
@@ -76,13 +86,8 @@
     <div><input type="submit" value="Make FamilyMember"/></div>
 </form>
 
-<%		} else { 
-
-	q=new Query("Family");
-	q.addFilter(Entity.KEY_RESERVED_PROPERTY, Query.FilterOperator.EQUAL, 
-			familymember.getProperty("family"));
-	pq = datastore.prepare(q);
-	Entity family=pq.asSingleEntity();
+<%		
+	} else { 
 	
 	// check to make sure these are in the same family
 	q=new Query("Family");

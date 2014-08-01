@@ -92,23 +92,29 @@ public class MakeFamilyMemberServlet extends HttpServlet {
 	    	}
 	    }
 	    
-	    Entity familymember = new Entity("FamilyMember", family.getKey());
-	    familymember.setProperty("user", user);
-	    familymember.setProperty("name", user.getNickname());
-	    familymember.setProperty("family", family.getKey());
-	    
+	    Query q = new Query("FamilyMember");
+		q.addFilter("user", FilterOperator.EQUAL, user);
+		PreparedQuery pq1 = datastore.prepare(q);
+		Entity familymember=pq1.asSingleEntity();
+		
+		if (familymember == null ) {
+		    familymember = new Entity("FamilyMember", family.getKey());
+		    familymember.setProperty("user", user);
+		    familymember.setProperty("name", user.getNickname());
+		}
+		familymember.setProperty("family", family.getKey());
 	    datastore.put(familymember);
 	    
     
 	    // wait until the record shows up
 	    int cnt=0; int limit=10;
 	    while (cnt < 1 && limit-- > 0) {
-	    		Query q = new Query("FamilyMember");
+	    		Query q1 = new Query("FamilyMember");
 		    	Filter f11 = new FilterPredicate("user", FilterOperator.EQUAL, user);
-		    	q.setFilter(f11);
+		    	q1.setFilter(f11);
 
-	    		PreparedQuery pq1 = datastore.prepare(q);
-				cnt = pq1.countEntities(withLimit(10));
+	    		PreparedQuery pq11 = datastore.prepare(q1);
+				cnt = pq11.countEntities(withLimit(10));
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
