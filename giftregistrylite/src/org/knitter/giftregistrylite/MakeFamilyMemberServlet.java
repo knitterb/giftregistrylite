@@ -28,6 +28,11 @@ public class MakeFamilyMemberServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 5706520902156989508L;
 
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		doPost(req, resp);
+	}
+	
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		resp.setContentType("text/plain");
@@ -38,6 +43,12 @@ public class MakeFamilyMemberServlet extends HttpServlet {
 	    
 	    if (user==null) {
 	    	resp.sendRedirect("/");
+	    	return;
+	    }
+	    
+	    if (req.getParameter("f") == null || req.getParameter("f").length() < 1) {
+	    	resp.sendRedirect("/?msg=Error:+You+must+supply+a+family+name");
+	    	return;
 	    }
 
 	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -76,7 +87,7 @@ public class MakeFamilyMemberServlet extends HttpServlet {
 		    }
 	    } else {   
 	    	if ( req.getParameter("t") == null || ! family.getProperty("token").equals(req.getParameter("t"))) {
-	    		resp.sendRedirect("/");
+	    		resp.sendRedirect("/?msg=Error:+Please+supply+a+valid+token");
 	    		return;
 	    	}
 	    }
