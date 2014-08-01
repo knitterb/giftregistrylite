@@ -13,6 +13,7 @@
 <%@ page import="com.google.appengine.api.datastore.Entity" %>
 <%@ page import="com.google.appengine.api.datastore.FetchOptions" %>
 <%@ page import="com.google.appengine.api.datastore.KeyFactory" %>
+<%@ page import="com.google.appengine.api.datastore.Text" %>
 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -151,13 +152,14 @@ if (numgifts>0){
 <tr><th>Description</th><th>Priority</th><th>Price</th><th>Quantity</th><th>Comment</th></tr>
 <%
 for (Entity g: gifts) {
+	Text c=(Text)g.getProperty("comment");
 %>
 <tr>
 <td><a href="<%= g.getProperty("link") %>"><%= g.getProperty("description") %></a></td>
 <td><%= g.getProperty("priority") %></td>
 <td><%= g.getProperty("price") %></td>
 <td><%= g.getProperty("quantity") %></td>
-<td><%= g.getProperty("comment") %></td>
+<td><%= c.getValue() %></td>
 </tr>
 
 
