@@ -93,7 +93,8 @@ public class MakeFamilyMemberServlet extends HttpServlet {
 	    }
 	    
 	    Query q = new Query("FamilyMember");
-		q.addFilter("user", FilterOperator.EQUAL, user);
+		Filter f = new FilterPredicate("user", FilterOperator.EQUAL, user);
+    	q.setFilter(f);
 		PreparedQuery pq1 = datastore.prepare(q);
 		Entity familymember=pq1.asSingleEntity();
 		
