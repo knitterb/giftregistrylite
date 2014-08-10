@@ -6,6 +6,8 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.api.server.spi.response.UnauthorizedException;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -29,6 +31,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+
 @Api(name = "giftendpoint", namespace = @ApiNamespace(ownerDomain = "knitter.org", ownerName = "knitter.org", packagePath = "giftregistrylite"))
 public class GiftEndpoint {
 
@@ -38,22 +41,17 @@ public class GiftEndpoint {
 	 *
 	 * @return A CollectionResponse class containing the list of all entities
 	 * persisted and a cursor to the next page.
+	 * @throws UnauthorizedException 
+	 * @throws NotFoundException 
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
 	@ApiMethod(name = "listGift")
 	public CollectionResponse<Gift> listGift(
 			@Nullable @Named("cursor") String cursorString,
-			@Nullable @Named("limit") Integer limit) {
+			@Nullable @Named("limit") Integer limit) throws UnauthorizedException, NotFoundException {
 
-		UserService userService = UserServiceFactory.getUserService();
-	    User user = userService.getCurrentUser();
-	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-	    com.google.appengine.api.datastore.Query q = new com.google.appengine.api.datastore.Query("FamilyMember");
-		Filter f = new FilterPredicate("user", FilterOperator.EQUAL, user);
-	    q.setFilter(f);
-		PreparedQuery pq = datastore.prepare(q);
-		Entity familymember=pq.asSingleEntity();
-	    
+		Entity familymember=getFamilyMember();
+		
 		EntityManager mgr = null;
 		Cursor cursor = null;
 		List<Gift> execute = null;
@@ -184,6 +182,26 @@ public class GiftEndpoint {
 
 	private static EntityManager getEntityManager() {
 		return EMF.get().createEntityManager();
+	}
+	
+	private Entity getFamilyMember() throws UnauthorizedException, NotFoundException {
+		UserService userService = UserServiceFactory.getUserService();
+	    User user = userService.getCurrentUser();
+	    
+	    if (user==null)
+	    	throw new UnauthorizedException("Not logged in.  Visit the website to log in.");
+	    
+	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+	    com.google.appengine.api.datastore.Query q = new com.google.appengine.api.datastore.Query("FamilyMember");
+		Filter f = new FilterPredicate("user", FilterOperator.EQUAL, user);
+	    q.setFilter(f);
+		PreparedQuery pq = datastore.prepare(q);
+		Entity familymember=pq.asSingleEntity();
+		assert(familymember!=null);
+		if (familymember == null)
+			throw new NotFoundException("Cannot find a family member for user: "+user+".  Visit website to create or join family.");
+		
+		return familymember;
 	}
 
 }
