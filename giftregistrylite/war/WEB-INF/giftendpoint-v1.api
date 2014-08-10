@@ -1,0 +1,249 @@
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://giftregistrylite.appspot.com/_ah/api",
+  "name" : "giftendpoint",
+  "version" : "v1",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://giftregistrylite.appspot.com/_ah/spi",
+    "deadline" : 65.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "ownerDomain" : "knitter.org",
+  "ownerName" : "knitter.org",
+  "packagePath" : "giftregistrylite",
+  "methods" : {
+    "giftendpoint.updateGift" : {
+      "path" : "gift",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "org.knitter.giftregistrylite.GiftEndpoint.updateGift",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "giftendpoint.removeGift" : {
+      "path" : "gift/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "org.knitter.giftregistrylite.GiftEndpoint.removeGift",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "giftendpoint.listGift" : {
+      "path" : "gift",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "org.knitter.giftregistrylite.GiftEndpoint.listGift",
+      "request" : {
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "limit" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "giftendpoint.insertGift" : {
+      "path" : "gift",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "org.knitter.giftregistrylite.GiftEndpoint.insertGift",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "giftendpoint.getGift" : {
+      "path" : "gift/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "org.knitter.giftregistrylite.GiftEndpoint.getGift",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "Gift" : {
+        "id" : "Gift",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "$ref" : "Key"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "priority" : {
+            "type" : "string"
+          },
+          "link" : {
+            "$ref" : "Link"
+          },
+          "quantity" : {
+            "type" : "integer"
+          },
+          "comment" : {
+            "type" : "string"
+          },
+          "price" : {
+            "type" : "number"
+          },
+          "parentID" : {
+            "$ref" : "Key"
+          },
+          "familymember" : {
+            "$ref" : "Key"
+          }
+        }
+      },
+      "Key" : {
+        "id" : "Key",
+        "type" : "object",
+        "properties" : {
+          "kind" : {
+            "type" : "string"
+          },
+          "appId" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "parent" : {
+            "$ref" : "Key"
+          },
+          "complete" : {
+            "type" : "boolean"
+          },
+          "namespace" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Link" : {
+        "id" : "Link",
+        "type" : "object",
+        "properties" : {
+          "value" : {
+            "type" : "string"
+          }
+        }
+      },
+      "CollectionResponse_Gift" : {
+        "id" : "CollectionResponse_Gift",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Gift"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "methods" : {
+      "org.knitter.giftregistrylite.GiftEndpoint.updateGift" : {
+        "request" : {
+          "$ref" : "Gift"
+        },
+        "response" : {
+          "$ref" : "Gift"
+        }
+      },
+      "org.knitter.giftregistrylite.GiftEndpoint.removeGift" : {
+      },
+      "org.knitter.giftregistrylite.GiftEndpoint.listGift" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Gift"
+        }
+      },
+      "org.knitter.giftregistrylite.GiftEndpoint.insertGift" : {
+        "request" : {
+          "$ref" : "Gift"
+        },
+        "response" : {
+          "$ref" : "Gift"
+        }
+      },
+      "org.knitter.giftregistrylite.GiftEndpoint.getGift" : {
+        "response" : {
+          "$ref" : "Gift"
+        }
+      }
+    }
+  }
+}
