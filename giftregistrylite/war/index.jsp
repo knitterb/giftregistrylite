@@ -178,6 +178,8 @@ for (Entity g: gifts) {
 <% } %>
 
 
+
+
 <br/>
 <% if (isThisYou) { %>
 <a href="/addgift.jsp">Add Gift</a>
