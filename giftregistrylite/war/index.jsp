@@ -17,197 +17,73 @@
 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<html>
+<html ng-app="giftreg" lang="en">
 <head>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css"/>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/giftregistrylite.css" rel="stylesheet">
+    <title>Gift Registry Lite</title>
+    
+    
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 
 <body>
-
+    <script src="/js/angular-1.2.21.min.js"></script>
+    <script src="/js/app.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
 
 <%
-	boolean isThisYou=true;
     UserService userService = UserServiceFactory.getUserService();
     User user = userService.getCurrentUser();
     if (user == null) {
-%>
-
-<p>Hello!
-    <a href="<%= userService.createLoginURL(request.getRequestURI()) %>">Sign in</a>.</p>
-
-<%
-} else {
-        pageContext.setAttribute("user", user);
-%>
-<p>Hello, ${fn:escapeXml(user.nickname)}! (<a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>)</p>
-
-<% if (request.getParameter("msg") != null) { %>
-<font color="red"><b><%= request.getParameter("msg") %></b></font>
-<% } %>
-
-
-
-<%
-	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-	
-	Query q = new Query("FamilyMember");
-	q.addFilter("user", FilterOperator.EQUAL, user);
-	PreparedQuery pq = datastore.prepare(q);
-	Entity userfamilymember=pq.asSingleEntity();
-	
-	q = new Query("FamilyMember");
-	if (request.getParameter("fm") == null) {
-		q.addFilter("user", FilterOperator.EQUAL, user);
-	} else {
-		q.addFilter(Entity.KEY_RESERVED_PROPERTY, FilterOperator.EQUAL, 
-				KeyFactory.stringToKey(request.getParameter("fm")));
-		isThisYou=false;
-	}
-	pq = datastore.prepare(q);
-	
-	Entity familymember=pq.asSingleEntity();
-	
-	Entity family = null;
-	if (familymember != null) {
-		q=new Query("Family");
-		q.addFilter(Entity.KEY_RESERVED_PROPERTY, Query.FilterOperator.EQUAL, 
-				familymember.getProperty("family"));
-		pq = datastore.prepare(q);
-		family=pq.asSingleEntity();
-	}
-	
-	if (familymember == null || family == null) {
-%>
-<p>You are not a FamilyMember</p>
-
-<form action="/makefamilymember" method="post">
-	<div>Family: <input type="text" name="f"/></div>
-	<div>Token: <input type="text" name="t"/> (optional, if provided)</div>
-    <div><input type="submit" value="Make FamilyMember"/></div>
-</form>
-
-<%		
-	} else { 
-	
-	// check to make sure these are in the same family
-	q=new Query("Family");
-	q.addFilter(Entity.KEY_RESERVED_PROPERTY, Query.FilterOperator.EQUAL, 
-			userfamilymember.getProperty("family"));
-	pq = datastore.prepare(q);
-	Entity userfamily=pq.asSingleEntity();
-	
-	if ( ! family.equals(userfamily)) {
-		family=userfamily;
-		familymember=userfamilymember;
-		isThisYou=true;
-		response.sendError(503, "Cannot access this Family Member, wrong Family");
-		return;
-	}
-	
-%>
-<p>You are a member of the <b><i><%= family.getProperty("name") %></i></b> family.  Give your family members this token to join: <b><%= family.getProperty("token")%></b>.
-
-<p>Other members of your family:</p>
-
-<%
-
-	q=new Query("FamilyMember");
-	q.addFilter("family", Query.FilterOperator.EQUAL, familymember.getProperty("family"));
-	pq = datastore.prepare(q);
-
-%>
-<ul>
-<% for (Entity fm: pq.asIterable()) {
-		if (! fm.getProperty("user").equals(user)) {
-			
-%>
-	<li> <a href="/index.jsp?fm=<%=KeyFactory.keyToString(fm.getKey())%>"><%= fm.getProperty("name")%></a></li>
-<%
-		}
-}
-%>
-</ul>
-
-
-<%
-
-	Query qgifts = new Query("Gift")
-		.setAncestor(familymember.getKey())
-		.addSort("priority", SortDirection.ASCENDING)
-		.addSort(Entity.KEY_RESERVED_PROPERTY, SortDirection.DESCENDING);
-	PreparedQuery pqgifts = datastore.prepare(qgifts);
-	List<Entity> gifts = pqgifts.asList(FetchOptions.Builder.withDefaults());
-	int numgifts=gifts.size();
-	
-%>
-<br/><br/>
-
-<% if (isThisYou) { %>
-You have <%= numgifts %> gifts.<br/>
-<% } else { %>
-<%= familymember.getProperty("name") %> has <%= numgifts %> gifts. 
-(this is not <a href="/">your</a> list)<br/>
-<% } %>
- 
-
-
-
-
-<%
-if (numgifts>0){
-%>
-<table border=1>
-<tr><th>Description</th><th>Priority</th><th>Price</th><th>Quantity</th><th>Comment</th></tr>
-<%
-for (Entity g: gifts) {
-	Text c=(Text)g.getProperty("comment");
-%>
-<tr>
-<td><a href="<%= g.getProperty("link") %>"><%= g.getProperty("description") %></a></td>
-<td><%= g.getProperty("priority") %></td>
-<td><%= g.getProperty("price") %></td>
-<td><%= g.getProperty("quantity") %></td>
-<td><%= c.getValue() %></td>
-</tr>
-
-
-<%
-}
-%>
-</table>
-<% } %>
-
-
-
-
-<br/>
-<% if (isThisYou) { %>
-<a href="/addgift.jsp">Add Gift</a>
-<% } else { %>
-Go back to <a href="/">your profile</a> to add gifts
-<% } %>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<%		} %>
-
-<%
+    	response.sendRedirect(userService.createLoginURL(request.getRequestURI()));
+    	return;
     }
 %>
+
+<p>(<a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>)</p>
+
+
+<div ng-controller='FamilyMemberController as famMemCtrl'>
+
+	<h3>
+		Welcome <%=user.getNickname()%>!!
+	</h3>
+
+	<div ng-hide="famMemCtrl.isFamilyMember()">
+		Join or create a family:
+		<form name="joinFamilyForm" ng-controller='FamilyController as famCtrl'
+								ng-submit='joinFamilyForm.$valid && famCtrl.joinFamily()' novalidate>
+		<label>Family:</label>
+		<input type="text" ng-model="famCtrl.family.name" required/>
+		<br/>
+		<label>Token:</label>
+		<input type="text" ng-model="famCtrl.family.token"/>
+		<br/>
+		<input type="submit" />
+		</form>
+	</div>
+</div>
+
+
+
+<ul ng-controller='GiftController as giftCtrl'>
+	<li ng-repeat="gift in giftCtrl.gifts">
+		here: {{gift.description}}
+	</li>
+</ul>
+
 
 
 </body>

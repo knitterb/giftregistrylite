@@ -18,11 +18,15 @@
     <script src="/js/angular-1.2.21.min.js"></script>
     <script src="/js/app.js"></script>
 
-<ul ng-controller='GiftController as giftCtrl'>
-	<li ng-repeat="gift in gifts">
-		here: {{gift.description}}
-	</li>
-</ul>
+	<h3 ng-controller='FamilyMemberController as famMemCtr'>
+		Welcome {{familymember.name}}!!
+	</h3>
+	
+	<ul ng-controller='GiftController as giftCtrl'>
+		<li ng-repeat="gift in gifts">
+			here: {{gift.description}}
+		</li>
+	</ul>
 
   </body>
 </html>

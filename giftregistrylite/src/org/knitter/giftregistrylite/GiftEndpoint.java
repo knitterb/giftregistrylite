@@ -1,6 +1,7 @@
 package org.knitter.giftregistrylite;
 
 import org.knitter.giftregistrylite.EMF;
+import org.knitter.giftregistrylite.family.FamilyMember;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -49,7 +50,7 @@ public class GiftEndpoint {
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("limit") Integer limit) throws UnauthorizedException, NotFoundException {
 
-		Entity familymember=getFamilyMember();
+		FamilyMember familymember=getFamilyMember();
 		
 		EntityManager mgr = null;
 		Cursor cursor = null;
@@ -58,7 +59,7 @@ public class GiftEndpoint {
 		try {
 			mgr = getEntityManager();
 			Query query = mgr.createQuery("select from Gift as Gift where parentID = :parentID");
-			query.setParameter("parentID", familymember.getKey());
+			query.setParameter("parentID", familymember.getId());
 			if (cursorString != null && cursorString != "") {
 				cursor = Cursor.fromWebSafeString(cursorString);
 				query.setHint(JPACursorHelper.CURSOR_HINT, cursor);
@@ -92,7 +93,7 @@ public class GiftEndpoint {
 	 * @param id the primary key of the java bean.
 	 * @return The entity with primary key id.
 	 */
-	@ApiMethod(name = "getGift")
+/*	@ApiMethod(name = "getGift")
 	public Gift getGift(@Named("id") Long id) {
 		EntityManager mgr = getEntityManager();
 		Gift gift = null;
@@ -103,7 +104,7 @@ public class GiftEndpoint {
 		}
 		return gift;
 	}
-
+*/
 	/**
 	 * This inserts a new entity into App Engine datastore. If the entity already
 	 * exists in the datastore, an exception is thrown.
@@ -112,7 +113,7 @@ public class GiftEndpoint {
 	 * @param gift the entity to be inserted.
 	 * @return The inserted entity.
 	 */
-	@ApiMethod(name = "insertGift")
+/*	@ApiMethod(name = "insertGift")
 	public Gift insertGift(Gift gift) {
 		EntityManager mgr = getEntityManager();
 		try {
@@ -125,7 +126,7 @@ public class GiftEndpoint {
 		}
 		return gift;
 	}
-
+*/
 	/**
 	 * This method is used for updating an existing entity. If the entity does not
 	 * exist in the datastore, an exception is thrown.
@@ -134,7 +135,7 @@ public class GiftEndpoint {
 	 * @param gift the entity to be updated.
 	 * @return The updated entity.
 	 */
-	@ApiMethod(name = "updateGift")
+/*	@ApiMethod(name = "updateGift")
 	public Gift updateGift(Gift gift) {
 		EntityManager mgr = getEntityManager();
 		try {
@@ -147,7 +148,7 @@ public class GiftEndpoint {
 		}
 		return gift;
 	}
-
+*/
 	/**
 	 * This method removes the entity with primary key id.
 	 * It uses HTTP DELETE method.
@@ -183,24 +184,12 @@ public class GiftEndpoint {
 		return EMF.get().createEntityManager();
 	}
 	
-	private Entity getFamilyMember() throws UnauthorizedException, NotFoundException {
+
+	private FamilyMember getFamilyMember() throws UnauthorizedException, NotFoundException {
 		UserService userService = UserServiceFactory.getUserService();
-	    User user = userService.getCurrentUser();
-	    
+		User user = userService.getCurrentUser();
 	    if (user==null)
 	    	throw new UnauthorizedException("Not logged in.  Visit the website to log in.");
-	    
-	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-	    com.google.appengine.api.datastore.Query q = new com.google.appengine.api.datastore.Query("FamilyMember");
-		Filter f = new FilterPredicate("user", FilterOperator.EQUAL, user);
-	    q.setFilter(f);
-		PreparedQuery pq = datastore.prepare(q);
-		Entity familymember=pq.asSingleEntity();
-		assert(familymember!=null);
-		if (familymember == null)
-			throw new NotFoundException("Cannot find a family member for user: "+user+".  Visit website to create or join family.");
-		
-		return familymember;
+		return FamilyMember.getFamilyMember(user);
 	}
-
 }

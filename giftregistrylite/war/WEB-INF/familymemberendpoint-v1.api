@@ -2,7 +2,7 @@
   "extends" : "thirdParty.api",
   "abstract" : false,
   "root" : "https://giftregistrylite.appspot.com/_ah/api",
-  "name" : "giftendpoint",
+  "name" : "familymemberendpoint",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
@@ -25,49 +25,34 @@
   },
   "ownerDomain" : "knitter.org",
   "ownerName" : "knitter.org",
-  "packagePath" : "giftregistrylite",
+  "packagePath" : "giftregistrylite.family",
   "methods" : {
-    "giftendpoint.removeGift" : {
-      "path" : "gift/{id}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "org.knitter.giftregistrylite.GiftEndpoint.removeGift",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
-    "giftendpoint.listGift" : {
-      "path" : "gift",
+    "familymemberendpoint.getCurrentFamilyMember" : {
+      "path" : "familymember",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "org.knitter.giftregistrylite.GiftEndpoint.listGift",
+      "rosyMethod" : "org.knitter.giftregistrylite.family.FamilyMemberEndpoint.getFamilyMember",
       "request" : {
-        "parameters" : {
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "limit" : {
-            "type" : "int32",
-            "required" : false
-          }
-        },
         "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "familymemberendpoint.joinFamily" : {
+      "path" : "joinFamily",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "org.knitter.giftregistrylite.family.FamilyMemberEndpoint.joinFamily",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -76,50 +61,23 @@
   },
   "descriptor" : {
     "schemas" : {
-      "CollectionResponse_Gift" : {
-        "id" : "CollectionResponse_Gift",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Gift"
-            }
-          },
-          "nextPageToken" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Gift" : {
-        "id" : "Gift",
+      "FamilyMember" : {
+        "id" : "FamilyMember",
         "type" : "object",
         "properties" : {
           "id" : {
             "$ref" : "Key"
           },
-          "description" : {
+          "family" : {
+            "$ref" : "Family"
+          },
+          "user" : {
+            "$ref" : "User"
+          },
+          "name" : {
             "type" : "string"
-          },
-          "priority" : {
-            "type" : "string"
-          },
-          "link" : {
-            "$ref" : "Link"
-          },
-          "quantity" : {
-            "type" : "integer"
-          },
-          "comment" : {
-            "type" : "string"
-          },
-          "price" : {
-            "type" : "number"
           },
           "parentID" : {
-            "$ref" : "Key"
-          },
-          "familymember" : {
             "$ref" : "Key"
           }
         }
@@ -152,22 +110,55 @@
           }
         }
       },
-      "Link" : {
-        "id" : "Link",
+      "Family" : {
+        "id" : "Family",
         "type" : "object",
         "properties" : {
-          "value" : {
+          "createdBy" : {
+            "$ref" : "User"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "token" : {
+            "type" : "string"
+          }
+        }
+      },
+      "User" : {
+        "id" : "User",
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string"
+          },
+          "authDomain" : {
+            "type" : "string"
+          },
+          "userId" : {
+            "type" : "string"
+          },
+          "federatedIdentity" : {
+            "type" : "string"
+          },
+          "nickname" : {
             "type" : "string"
           }
         }
       }
     },
     "methods" : {
-      "org.knitter.giftregistrylite.GiftEndpoint.removeGift" : {
-      },
-      "org.knitter.giftregistrylite.GiftEndpoint.listGift" : {
+      "org.knitter.giftregistrylite.family.FamilyMemberEndpoint.getFamilyMember" : {
         "response" : {
-          "$ref" : "CollectionResponse_Gift"
+          "$ref" : "FamilyMember"
+        }
+      },
+      "org.knitter.giftregistrylite.family.FamilyMemberEndpoint.joinFamily" : {
+        "request" : {
+          "$ref" : "Family"
+        },
+        "response" : {
+          "$ref" : "FamilyMember"
         }
       }
     }
