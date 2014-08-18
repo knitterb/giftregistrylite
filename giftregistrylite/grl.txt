@@ -1,0 +1,12 @@
+
+Flow:
+- Request FamilyMember
+  If not exists
+  - Create Family or Join Family (w/ Token)
+  - Create FamilyMember
+- Request Gifts
+- Request FamilyMembers
+
+
+TODO
+- fix missing /js/angular.min.js.map
