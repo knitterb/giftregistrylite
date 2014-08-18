@@ -14,15 +14,15 @@ app.controller('GiftController', [ '$http', '$scope', function($http, $scope) {
 app.controller('FamilyMemberController', [ '$http', '$scope', function($http, $scope) {
 	this.familymember=null;
 	
-	this.isFamilyMember = function() {
-		return this.familymember != null;
-	};
-	
 	var me = this;
 	$http.get('/_ah/api/familymemberendpoint/v1/familymember').success(function(data) {
+		console.log(data);
 		me.familymember=data;
 	});
 	
+	this.isFamilyMember = function() {
+		return this.familymember != null;
+	};	
 
 }]);
 
@@ -30,11 +30,13 @@ app.controller('FamilyController', [ '$http', '$scope', function($http, $scope) 
 	this.family={};
 	this.joinFamily = function() {
 		console.log(this.family);
-		this.familymember={
-				family: this.family
-		};
-		console.log(this.familymember);
-	}
+		$http.post('/_ah/api/familymemberendpoint/v1/familymember', this.family).success(function(data) {
+			console.log(data);
+		}).error(function(data) {
+			console.log("error");
+			console.log(data);
+		});
+	};
 }]);
 
 

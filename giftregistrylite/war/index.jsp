@@ -53,13 +53,10 @@
     }
 %>
 
-<p>(<a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>)</p>
-
-
 <div ng-controller='FamilyMemberController as famMemCtrl'>
 
 	<h3>
-		Welcome <%=user.getNickname()%>!!
+		Welcome <%=user.getNickname()%>!! (<a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>)
 	</h3>
 
 	<div ng-hide="famMemCtrl.isFamilyMember()">
@@ -75,6 +72,16 @@
 		<input type="submit" />
 		</form>
 	</div>
+
+	<div ng-show="famMemCtrl.isFamilyMember()">
+	<p>
+		Family: {{famMemCtrl.familymember.family.name}} (Token: {{famMemCtrl.familymember.family.token}})
+	</p>
+	</div>
+
+
+
+
 </div>
 
 

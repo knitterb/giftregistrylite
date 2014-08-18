@@ -16,9 +16,6 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.users.User;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
-
-import org.datanucleus.api.jpa.annotations.Extension;
 
 
 @Entity
@@ -43,8 +40,13 @@ public class Family {
 	}
 	public void setToken(String token) {
 		this.token = token;
+	}	
+	public Key getId() {
+		return id;
 	}
-	
+	public void setId(Key id) {
+		this.id = id;
+	}
 	public static Family getFamily (String name) {
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	    Query qf = new Query("Family");

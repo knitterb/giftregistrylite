@@ -5,10 +5,7 @@ import javax.persistence.Id;
 import org.datanucleus.api.jpa.annotations.Extension;
 
 import com.google.api.server.spi.response.NotFoundException;
-import com.google.api.server.spi.response.UnauthorizedException;
 import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Key;
@@ -18,9 +15,6 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
-
-import org.datanucleus.api.jpa.annotations.Extension;
 
 
 @Entity
@@ -77,6 +71,25 @@ public class FamilyMember {
 		rfm.parentID=fm.getParent();
 		
 		return rfm;
+	}
+	
+	public static FamilyMember makeFamilyMember (User user, Family family) {
+
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		
+		com.google.appengine.api.datastore.Entity fm= new com.google.appengine.api.datastore.Entity("FamilyMember", family.getId());
+	    fm.setProperty("user", user);
+	    fm.setProperty("name", user.getNickname());
+		fm.setProperty("family", family.getId());
+	    datastore.put(fm);
+	    
+		FamilyMember familymember=new FamilyMember();
+	    familymember.setUser(user);
+	    familymember.setName(user.getNickname());
+	    familymember.setFamily(family);
+	    familymember.setId(fm.getKey());
+	    
+	    return familymember;
 	}
 
 	@Id

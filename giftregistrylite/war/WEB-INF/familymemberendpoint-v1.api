@@ -42,14 +42,14 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "familymemberendpoint.joinFamily" : {
-      "path" : "joinFamily",
+    "familymemberendpoint.insertFamilyMember" : {
+      "path" : "familymember",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "org.knitter.giftregistrylite.family.FamilyMemberEndpoint.joinFamily",
+      "rosyMethod" : "org.knitter.giftregistrylite.family.FamilyMemberEndpoint.insertFamilyMember",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -114,6 +114,9 @@
         "id" : "Family",
         "type" : "object",
         "properties" : {
+          "id" : {
+            "$ref" : "Key"
+          },
           "createdBy" : {
             "$ref" : "User"
           },
@@ -153,7 +156,7 @@
           "$ref" : "FamilyMember"
         }
       },
-      "org.knitter.giftregistrylite.family.FamilyMemberEndpoint.joinFamily" : {
+      "org.knitter.giftregistrylite.family.FamilyMemberEndpoint.insertFamilyMember" : {
         "request" : {
           "$ref" : "Family"
         },
