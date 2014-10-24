@@ -5,23 +5,13 @@ import org.knitter.giftregistrylite.EMF;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
-import com.google.api.server.spi.response.CollectionResponse;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.api.server.spi.response.UnauthorizedException;
-import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.appengine.datanucleus.query.JPACursorHelper;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-import javax.inject.Named;
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 @Api(name = "familymemberendpoint", namespace = @ApiNamespace(ownerDomain = "knitter.org", ownerName = "knitter.org", packagePath = "giftregistrylite.family"))
 public class FamilyMemberEndpoint {
@@ -143,8 +133,8 @@ public class FamilyMemberEndpoint {
 	 * @return The inserted entity.
 	 * @throws UnauthorizedException
 	 */
-	@ApiMethod(name = "joinFamily")
-	public FamilyMember joinFamily(Family pfamily) throws UnauthorizedException {
+	@ApiMethod(name = "insertFamilyMember")
+	public FamilyMember insertFamilyMember(Family family) throws UnauthorizedException {
 		FamilyMember familymember=null;
 
 		UserService userService = UserServiceFactory.getUserService();
@@ -152,13 +142,13 @@ public class FamilyMemberEndpoint {
 	    if (user==null)
 	    	throw new UnauthorizedException("Not logged in.  Visit the website to log in.");
 
-	    Family family=Family.getFamily(pfamily.getName());
+	    Family tfamily=Family.getFamily(family.getName());
 		
-		if (family != null) {
-			if (!family.getToken().equals(pfamily.getToken()));
+		if (tfamily != null) {
+			if (!tfamily.getToken().equals(family.getToken()))
 				throw new UnauthorizedException("Token mismatch on existing Family");
 		} else {
-			family=Family.makeFamily(user, pfamily.getName());
+			tfamily=Family.makeFamily(user, family.getName());
 		}
 		
 		// TODO make family member
@@ -208,6 +198,7 @@ public class FamilyMemberEndpoint {
 	}
 */
 	
+	@SuppressWarnings("unused")
 	private boolean containsFamilyMember(FamilyMember familymember) {
 		EntityManager mgr = getEntityManager();
 		boolean contains = true;
