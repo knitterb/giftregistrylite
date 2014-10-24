@@ -1,0 +1,179 @@
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://bkgiftreg.appspot.com/_ah/api",
+  "name" : "giftendpoint",
+  "version" : "v1",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://bkgiftreg.appspot.com/_ah/spi",
+    "deadline" : 65.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "ownerDomain" : "blandsite.org",
+  "ownerName" : "blandsite.org",
+  "methods" : {
+    "giftendpoint.removeGift" : {
+      "path" : "gift/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "org.blandsite.GiftEndpoint.removeGift",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "giftendpoint.getGift" : {
+      "path" : "gift/{id}/{token}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "org.blandsite.GiftEndpoint.getGift",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "string",
+            "required" : true
+          },
+          "token" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "giftendpoint.updateGift" : {
+      "path" : "gift",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "org.blandsite.GiftEndpoint.updateGift",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "giftendpoint.insertGift" : {
+      "path" : "gift/{token}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "org.blandsite.GiftEndpoint.insertGift",
+      "request" : {
+        "parameters" : {
+          "token" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "Gift" : {
+        "id" : "Gift",
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "category" : {
+            "type" : "string"
+          },
+          "price" : {
+            "type" : "number"
+          },
+          "retailer" : {
+            "type" : "string"
+          },
+          "ranking" : {
+            "type" : "integer"
+          },
+          "quantity" : {
+            "type" : "integer"
+          },
+          "url_string" : {
+            "type" : "string"
+          },
+          "comment" : {
+            "type" : "string"
+          },
+          "username" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "methods" : {
+      "org.blandsite.GiftEndpoint.removeGift" : {
+      },
+      "org.blandsite.GiftEndpoint.getGift" : {
+        "response" : {
+          "$ref" : "Gift"
+        }
+      },
+      "org.blandsite.GiftEndpoint.updateGift" : {
+        "request" : {
+          "$ref" : "Gift"
+        },
+        "response" : {
+          "$ref" : "Gift"
+        }
+      },
+      "org.blandsite.GiftEndpoint.insertGift" : {
+        "request" : {
+          "$ref" : "Gift"
+        },
+        "response" : {
+          "$ref" : "Gift"
+        }
+      }
+    }
+  }
+}
