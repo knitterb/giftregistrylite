@@ -69,5 +69,10 @@ public class User {
 		this.password_salt=p;
 	}
 	
+	// TODO turn this into a hashed check!
+	public boolean checkPassword(String p) {
+		return this.password_hash.equals(p);
+	}
+	
 	
 }

@@ -5,13 +5,15 @@ import java.security.SecureRandom;
 import java.util.Date;
 
 import javax.jdo.PersistenceManager;
+import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+@PersistenceCapable
 public class Token {
 
-	@Persistent
 	@PrimaryKey
+	@Persistent
 	private String key;
 	
 	@Persistent
@@ -20,7 +22,7 @@ public class Token {
 	private Date expiration;
 	@Persistent
 	private String username;
-	
+		
 	public static final long DEFAULT_EXPIRATION = 60*60*24*90; // 90 days in seconds
 	private static SecureRandom srand = new SecureRandom();
 	
@@ -36,6 +38,22 @@ public class Token {
 		pm.close();
 		
 		return t;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public Date getExpiration() {
+		return expiration;
+	}
+
+	public String getUsername() {
+		return username;
 	}
 	
 	

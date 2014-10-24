@@ -26,6 +26,31 @@
   "ownerDomain" : "blandsite.org",
   "ownerName" : "blandsite.org",
   "methods" : {
+    "userendpoint.authenticateUser" : {
+      "path" : "authenticateUser/{username}/{password}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "org.blandsite.UserEndpoint.authenticateUser",
+      "request" : {
+        "parameters" : {
+          "username" : {
+            "type" : "string",
+            "required" : true
+          },
+          "password" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "userendpoint.removeUser" : {
       "path" : "user/{id}/{token}",
       "httpMethod" : "DELETE",
@@ -117,6 +142,26 @@
   },
   "descriptor" : {
     "schemas" : {
+      "Token" : {
+        "id" : "Token",
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "created" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "expiration" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "username" : {
+            "type" : "string"
+          }
+        }
+      },
       "User" : {
         "id" : "User",
         "type" : "object",
@@ -141,6 +186,11 @@
       }
     },
     "methods" : {
+      "org.blandsite.UserEndpoint.authenticateUser" : {
+        "response" : {
+          "$ref" : "Token"
+        }
+      },
       "org.blandsite.UserEndpoint.removeUser" : {
       },
       "org.blandsite.UserEndpoint.updateUser" : {
