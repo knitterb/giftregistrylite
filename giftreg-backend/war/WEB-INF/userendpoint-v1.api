@@ -27,7 +27,7 @@
   "ownerName" : "blandsite.org",
   "methods" : {
     "userendpoint.removeUser" : {
-      "path" : "user/{id}",
+      "path" : "user/{id}/{token}",
       "httpMethod" : "DELETE",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
@@ -39,6 +39,10 @@
           "id" : {
             "type" : "string",
             "required" : true
+          },
+          "token" : {
+            "type" : "string",
+            "required" : true
           }
         },
         "body" : "empty"
@@ -48,7 +52,7 @@
       }
     },
     "userendpoint.updateUser" : {
-      "path" : "user",
+      "path" : "user/{token}",
       "httpMethod" : "PUT",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
@@ -56,6 +60,12 @@
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
       "rosyMethod" : "org.blandsite.UserEndpoint.updateUser",
       "request" : {
+        "parameters" : {
+          "token" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
       },
@@ -80,7 +90,7 @@
       }
     },
     "userendpoint.getUser" : {
-      "path" : "user/{id}",
+      "path" : "user/{id}/{token}",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
@@ -92,31 +102,10 @@
           "id" : {
             "type" : "string",
             "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "userendpoint.listUser" : {
-      "path" : "user",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "org.blandsite.UserEndpoint.listUser",
-      "request" : {
-        "parameters" : {
-          "cursor" : {
-            "type" : "string",
-            "required" : false
           },
-          "limit" : {
-            "type" : "int32",
-            "required" : false
+          "token" : {
+            "type" : "string",
+            "required" : true
           }
         },
         "body" : "empty"
@@ -149,21 +138,6 @@
             "type" : "string"
           }
         }
-      },
-      "CollectionResponse_User" : {
-        "id" : "CollectionResponse_User",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "User"
-            }
-          },
-          "nextPageToken" : {
-            "type" : "string"
-          }
-        }
       }
     },
     "methods" : {
@@ -188,11 +162,6 @@
       "org.blandsite.UserEndpoint.getUser" : {
         "response" : {
           "$ref" : "User"
-        }
-      },
-      "org.blandsite.UserEndpoint.listUser" : {
-        "response" : {
-          "$ref" : "CollectionResponse_User"
         }
       }
     }

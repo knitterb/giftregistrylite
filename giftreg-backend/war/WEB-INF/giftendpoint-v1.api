@@ -27,7 +27,7 @@
   "ownerName" : "blandsite.org",
   "methods" : {
     "giftendpoint.removeGift" : {
-      "path" : "gift/{id}",
+      "path" : "gift/{id}/{token}",
       "httpMethod" : "DELETE",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
@@ -37,6 +37,10 @@
       "request" : {
         "parameters" : {
           "id" : {
+            "type" : "string",
+            "required" : true
+          },
+          "token" : {
             "type" : "string",
             "required" : true
           }
@@ -73,7 +77,7 @@
       }
     },
     "giftendpoint.updateGift" : {
-      "path" : "gift",
+      "path" : "gift/{token}",
       "httpMethod" : "PUT",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
@@ -81,6 +85,12 @@
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
       "rosyMethod" : "org.blandsite.GiftEndpoint.updateGift",
       "request" : {
+        "parameters" : {
+          "token" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
       },

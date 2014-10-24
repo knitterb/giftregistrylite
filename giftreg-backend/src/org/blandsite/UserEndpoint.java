@@ -22,53 +22,6 @@ import javax.jdo.Query;
 @Api(name = "userendpoint", namespace = @ApiNamespace(ownerDomain = "blandsite.org", ownerName = "blandsite.org", packagePath = ""))
 public class UserEndpoint {
 
-	/**
-	 * This method lists all the entities inserted in datastore.
-	 * It uses HTTP GET method and paging support.
-	 *
-	 * @return A CollectionResponse class containing the list of all entities
-	 * persisted and a cursor to the next page.
-	 */
-	@SuppressWarnings({ "unchecked", "unused" })
-	@ApiMethod(name = "listUser")
-	public CollectionResponse<User> listUser(
-			@Nullable @Named("cursor") String cursorString,
-			@Nullable @Named("limit") Integer limit) {
-
-		PersistenceManager mgr = null;
-		Cursor cursor = null;
-		List<User> execute = null;
-
-		try {
-			mgr = getPersistenceManager();
-			Query query = mgr.newQuery(User.class);
-			if (cursorString != null && cursorString != "") {
-				cursor = Cursor.fromWebSafeString(cursorString);
-				HashMap<String, Object> extensionMap = new HashMap<String, Object>();
-				extensionMap.put(JDOCursorHelper.CURSOR_EXTENSION, cursor);
-				query.setExtensions(extensionMap);
-			}
-
-			if (limit != null) {
-				query.setRange(0, limit);
-			}
-
-			execute = (List<User>) query.execute();
-			cursor = JDOCursorHelper.getCursor(execute);
-			if (cursor != null)
-				cursorString = cursor.toWebSafeString();
-
-			// Tight loop for fetching all entities from datastore and accomodate
-			// for lazy fetch.
-			for (User obj : execute)
-				;
-		} finally {
-			mgr.close();
-		}
-
-		return CollectionResponse.<User> builder().setItems(execute)
-				.setNextPageToken(cursorString).build();
-	}
 
 	/**
 	 * This method gets the entity having primary key id. It uses HTTP GET method.
@@ -77,7 +30,7 @@ public class UserEndpoint {
 	 * @return The entity with primary key id.
 	 */
 	@ApiMethod(name = "getUser")
-	public User getUser(@Named("id") String id) {
+	public User getUser(@Named("id") String id, @Named("token") String token) {
 		PersistenceManager mgr = getPersistenceManager();
 		User user = null;
 		try {
@@ -96,7 +49,7 @@ public class UserEndpoint {
 	 * @param user the entity to be inserted.
 	 * @return The inserted entity.
 	 */
-	@ApiMethod(name = "insertUser")
+	@ApiMethod(name = "insertUser") // TODO make this register user
 	public User insertUser(User user) {
 		PersistenceManager mgr = getPersistenceManager();
 		try {
@@ -119,7 +72,7 @@ public class UserEndpoint {
 	 * @return The updated entity.
 	 */
 	@ApiMethod(name = "updateUser")
-	public User updateUser(User user) {
+	public User updateUser(User user, @Named("token") String token) {
 		PersistenceManager mgr = getPersistenceManager();
 		try {
 			if (!containsUser(user)) {
@@ -138,8 +91,9 @@ public class UserEndpoint {
 	 *
 	 * @param id the primary key of the entity to be deleted.
 	 */
+	// TODO this will have to destroy all gifts too
 	@ApiMethod(name = "removeUser")
-	public void removeUser(@Named("id") String id) {
+	public void removeUser(@Named("id") String id, @Named("token") String token) {
 		PersistenceManager mgr = getPersistenceManager();
 		try {
 			User user = mgr.getObjectById(User.class, id);

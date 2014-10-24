@@ -72,7 +72,7 @@ public class GiftEndpoint {
 	 * @return The updated entity.
 	 */
 	@ApiMethod(name = "updateGift")
-	public Gift updateGift(Gift gift) {
+	public Gift updateGift(Gift gift, @Named("token") String token) {
 		PersistenceManager mgr = getPersistenceManager();
 		try {
 			if (!containsGift(gift)) {
@@ -92,7 +92,7 @@ public class GiftEndpoint {
 	 * @param id the primary key of the entity to be deleted.
 	 */
 	@ApiMethod(name = "removeGift")
-	public void removeGift(@Named("id") String id) {
+	public void removeGift(@Named("id") String id, @Named("token") String token) {
 		PersistenceManager mgr = getPersistenceManager();
 		try {
 			Gift gift = mgr.getObjectById(Gift.class, id);
