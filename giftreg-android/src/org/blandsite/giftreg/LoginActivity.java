@@ -1,11 +1,13 @@
 package org.blandsite.giftreg;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 public class LoginActivity extends Activity {
@@ -24,7 +26,7 @@ public class LoginActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		//getMenuInflater().inflate(R.menu.login, menu);
+		getMenuInflater().inflate(R.menu.login, menu);
 		return false;
 	}
 
@@ -38,5 +40,10 @@ public class LoginActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void loginButtonClicked(View v) {
+		Intent i=new Intent(this, MainActivity.class);
+		startActivity(i);
 	}
 }
