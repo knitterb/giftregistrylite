@@ -1,11 +1,21 @@
 package org.blandsite;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
 import org.blandsite.PMF;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.api.server.spi.config.Nullable;
+import com.google.api.server.spi.response.CollectionResponse;
+import com.google.appengine.api.datastore.Cursor;
+import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
+import javax.jdo.Query;
 import javax.inject.Named;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -23,15 +33,73 @@ public class GiftEndpoint {
 	 */
 	@ApiMethod(name = "getGift")
 	public Gift getGift(@Named("id") String id, @Named("token") String token) {
-		PersistenceManager mgr = getPersistenceManager();
 		Gift gift = null;
-		try {
-			gift = mgr.getObjectById(Gift.class, id);
-		} finally {
-			mgr.close();
+		Token t=Token.validateToken(token);
+		if (t != null) {
+			PersistenceManager mgr = getPersistenceManager();
+			try {
+				Gift gt = mgr.getObjectById(Gift.class, id);
+				if (gt.getUsername().equals(t.getUsername())) {
+					gift=gt;
+				}
+			} finally {
+				mgr.close();
+			}
 		}
 		return gift;
 	}
+	
+	@ApiMethod(name = "listGifts")
+	public CollectionResponse<Gift> listGifts(
+			@Named("token") String token,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("limit") Integer limit) {
+
+		PersistenceManager mgr = null;
+		Cursor cursor = null;
+		List<Gift> execute = null;
+
+		try {
+			mgr = getPersistenceManager();
+			
+			Token t=Token.validateToken(token);
+			if (t!=null) {
+				
+				Query query = mgr.newQuery(Gift.class);
+				query.setFilter("username == usernameParam");
+				query.setOrdering("ranking desc");
+				query.declareParameters("String usernameParam");
+
+				
+				if (cursorString != null && cursorString != "") {
+					cursor = Cursor.fromWebSafeString(cursorString);
+					HashMap<String, Object> extensionMap = new HashMap<String, Object>();
+					extensionMap.put(JDOCursorHelper.CURSOR_EXTENSION, cursor);
+					query.setExtensions(extensionMap);
+				}
+	
+				if (limit != null) {
+					query.setRange(0, limit);
+				}
+	
+				execute = (List<Gift>) query.execute(t.getUsername());
+				cursor = JDOCursorHelper.getCursor(execute);
+				if (cursor != null)
+					cursorString = cursor.toWebSafeString();
+	
+				// Tight loop for fetching all entities from datastore and accomodate
+				// for lazy fetch.
+				for (Gift obj : execute)
+					;
+			}
+		} finally {
+			mgr.close();
+		}
+
+		return CollectionResponse.<Gift> builder().setItems(execute)
+				.setNextPageToken(cursorString).build();
+	}	
+	
 
 	/**
 	 * This inserts a new entity into App Engine datastore. If the entity already
@@ -43,14 +111,23 @@ public class GiftEndpoint {
 	 */
 	@ApiMethod(name = "insertGift")
 	public Gift insertGift(Gift gift, @Named("token") String token) {
-		PersistenceManager mgr = getPersistenceManager();
-		try {
-			if (containsGift(gift)) {
-				throw new EntityExistsException("Object already exists");
+		Token t=Token.validateToken(token);
+		if (t != null) {
+			
+			PersistenceManager mgr = getPersistenceManager();
+			try {
+				if (containsGift(gift)) {
+					throw new EntityExistsException("Object already exists");
+				}
+				User u=mgr.getObjectById(User.class, t.getUsername());
+				u.addGift(gift);
+				ArrayList a=new ArrayList();
+				a.add(u);
+				a.add(gift);
+				mgr.makePersistentAll(a);
+			} finally {
+				mgr.close();
 			}
-			mgr.makePersistent(gift);
-		} finally {
-			mgr.close();
 		}
 		return gift;
 	}

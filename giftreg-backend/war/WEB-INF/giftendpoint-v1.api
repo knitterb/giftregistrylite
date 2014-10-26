@@ -26,31 +26,6 @@
   "ownerDomain" : "blandsite.org",
   "ownerName" : "blandsite.org",
   "methods" : {
-    "giftendpoint.removeGift" : {
-      "path" : "gift/{id}/{token}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "org.blandsite.GiftEndpoint.removeGift",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "string",
-            "required" : true
-          },
-          "token" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
     "giftendpoint.getGift" : {
       "path" : "gift/{id}/{token}",
       "httpMethod" : "GET",
@@ -74,6 +49,31 @@
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "giftendpoint.removeGift" : {
+      "path" : "gift/{id}/{token}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "org.blandsite.GiftEndpoint.removeGift",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "string",
+            "required" : true
+          },
+          "token" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
       }
     },
     "giftendpoint.updateGift" : {
@@ -119,6 +119,35 @@
       "response" : {
         "body" : "autoTemplate(backendResponse)"
       }
+    },
+    "giftendpoint.listGifts" : {
+      "path" : "gift/{token}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "org.blandsite.GiftEndpoint.listGifts",
+      "request" : {
+        "parameters" : {
+          "token" : {
+            "type" : "string",
+            "required" : true
+          },
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "limit" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
     }
   },
   "descriptor" : {
@@ -158,15 +187,30 @@
             "type" : "string"
           }
         }
+      },
+      "CollectionResponse_Gift" : {
+        "id" : "CollectionResponse_Gift",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Gift"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
       }
     },
     "methods" : {
-      "org.blandsite.GiftEndpoint.removeGift" : {
-      },
       "org.blandsite.GiftEndpoint.getGift" : {
         "response" : {
           "$ref" : "Gift"
         }
+      },
+      "org.blandsite.GiftEndpoint.removeGift" : {
       },
       "org.blandsite.GiftEndpoint.updateGift" : {
         "request" : {
@@ -182,6 +226,11 @@
         },
         "response" : {
           "$ref" : "Gift"
+        }
+      },
+      "org.blandsite.GiftEndpoint.listGifts" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Gift"
         }
       }
     }

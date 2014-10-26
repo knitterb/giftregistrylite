@@ -6,6 +6,9 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import javax.jdo.annotations.IdGeneratorStrategy;
 
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+
 
 @PersistenceCapable
 public class Gift {
@@ -38,7 +41,11 @@ public class Gift {
 	@Persistent
 	private String username;
 	
-	
+	public static Gift newInstance(String username) {
+		Gift rc = new Gift();
+		rc.username=username;
+		return rc;
+	}
 	
 
 	public String getDescription() {

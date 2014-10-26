@@ -29,7 +29,7 @@ public class Token {
 	public static Token generate(User u) {
 		Token t=new Token();
 		t.created = new Date();
-		t.expiration = new Date(t.created.getTime() + DEFAULT_EXPIRATION);
+		t.expiration = new Date(t.created.getTime() + DEFAULT_EXPIRATION*1000);
 		t.username = u.getUsername();
 		t.key = new BigInteger(130, srand).toString(32);
 		
@@ -38,6 +38,18 @@ public class Token {
 		pm.close();
 		
 		return t;
+	}
+	
+	public static Token validateToken(String key) {
+ 		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Token t=pm.getObjectById(Token.class, key);
+		if (t!=null) {
+			if (t.expiration.after(new Date())) {
+				return t;
+			}
+		}
+		
+		return null;
 	}
 
 	public String getKey() {
