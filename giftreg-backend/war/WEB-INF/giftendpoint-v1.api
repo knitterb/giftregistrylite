@@ -26,31 +26,6 @@
   "ownerDomain" : "blandsite.org",
   "ownerName" : "blandsite.org",
   "methods" : {
-    "giftendpoint.getGift" : {
-      "path" : "gift/{id}/{token}",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "org.blandsite.GiftEndpoint.getGift",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "string",
-            "required" : true
-          },
-          "token" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "giftendpoint.removeGift" : {
       "path" : "gift/{id}/{token}",
       "httpMethod" : "DELETE",
@@ -74,6 +49,31 @@
       },
       "response" : {
         "body" : "empty"
+      }
+    },
+    "giftendpoint.getGift" : {
+      "path" : "gift/{id}/{token}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "org.blandsite.GiftEndpoint.getGift",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "string",
+            "required" : true
+          },
+          "token" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
       }
     },
     "giftendpoint.updateGift" : {
@@ -205,12 +205,12 @@
       }
     },
     "methods" : {
+      "org.blandsite.GiftEndpoint.removeGift" : {
+      },
       "org.blandsite.GiftEndpoint.getGift" : {
         "response" : {
           "$ref" : "Gift"
         }
-      },
-      "org.blandsite.GiftEndpoint.removeGift" : {
       },
       "org.blandsite.GiftEndpoint.updateGift" : {
         "request" : {

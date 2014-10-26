@@ -76,6 +76,22 @@
         "body" : "empty"
       }
     },
+    "userendpoint.insertUser" : {
+      "path" : "user",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "org.blandsite.UserEndpoint.insertUser",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "userendpoint.updateUser" : {
       "path" : "user/{token}",
       "httpMethod" : "PUT",
@@ -91,22 +107,6 @@
             "required" : true
           }
         },
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "userendpoint.insertUser" : {
-      "path" : "user",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "org.blandsite.UserEndpoint.insertUser",
-      "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
       },
@@ -193,7 +193,7 @@
       },
       "org.blandsite.UserEndpoint.removeUser" : {
       },
-      "org.blandsite.UserEndpoint.updateUser" : {
+      "org.blandsite.UserEndpoint.insertUser" : {
         "request" : {
           "$ref" : "User"
         },
@@ -201,7 +201,7 @@
           "$ref" : "User"
         }
       },
-      "org.blandsite.UserEndpoint.insertUser" : {
+      "org.blandsite.UserEndpoint.updateUser" : {
         "request" : {
           "$ref" : "User"
         },
