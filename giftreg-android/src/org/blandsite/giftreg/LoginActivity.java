@@ -48,7 +48,7 @@ public class LoginActivity extends Activity {
 	            protected Void doInBackground( final Void ... params ) {
 
 	            	try {
-						Thread.sleep(1500);
+						Thread.sleep(500);
 						
 
 					} catch (InterruptedException e) {

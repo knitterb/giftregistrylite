@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    
+    
+    <item
+        android:id="@+id/action_add_gift"
+        android:showAsAction="withText|ifRoom"
+        android:title="+"
+                        android:orderInCategory="1"
+        
+        />
+    
+        <item
+        android:id="@+id/action_refresh_gift"
+        android:showAsAction="withText|ifRoom"
+        android:title="Refresh"
+                android:orderInCategory="2"
+        
+        />    
+    
+    
+</menu>

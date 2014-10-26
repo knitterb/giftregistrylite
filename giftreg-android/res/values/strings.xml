@@ -6,7 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="welcome_msg">Welcome To Gifts!</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_section1">Gifts</string>
+    <string name="title_section_gifts">Gifts</string>
     <string name="title_section2">Family</string>
     <string name="title_section3">Settings</string>
     <string name="title_section4">About</string>
