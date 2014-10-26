@@ -146,6 +146,7 @@ public class LoginActivity extends Activity {
 						
 						SharedPreferences.Editor editor=((Application)getApplication()).getPrefs().edit();
 						editor.putString("token", app.token);
+						editor.putString("username", app.username);
 						editor.commit();
 						
 						Intent i=new Intent(LoginActivity.this, MainActivity.class);
