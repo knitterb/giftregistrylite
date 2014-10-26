@@ -1,13 +1,13 @@
 package org.blandsite.giftreg;
 
 import android.app.Activity;
-
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +20,8 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
+	
+	public static final String LOG_TAG = "MainActivity";
 
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
@@ -45,6 +47,8 @@ public class MainActivity extends Activity implements
 		// Set up the drawer.
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
 				(DrawerLayout) findViewById(R.id.drawer_layout));
+		
+		
 	}
 
 	@Override
@@ -68,7 +72,14 @@ public class MainActivity extends Activity implements
 		case 3:
 			mTitle = getString(R.string.title_section3);
 			break;
+		case 4:
+			mTitle = getString(R.string.title_section4);
+			break;
+		default:
+			Log.e(LOG_TAG, "Base section selected: "+number);
 		}
+		
+		
 	}
 
 	public void restoreActionBar() {
