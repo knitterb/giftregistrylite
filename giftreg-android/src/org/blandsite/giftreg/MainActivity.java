@@ -5,6 +5,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -63,17 +64,31 @@ public class MainActivity extends Activity implements
 
 	public void onSectionAttached(int number) {
 		switch (number) {
-		case 1:
+		case 1: // gifts
 			mTitle = getString(R.string.title_section1);
 			break;
-		case 2:
+		case 2: // family
 			mTitle = getString(R.string.title_section2);
 			break;
-		case 3:
+		case 3: // settings
 			mTitle = getString(R.string.title_section3);
 			break;
-		case 4:
+		case 4: // about
 			mTitle = getString(R.string.title_section4);
+			break;
+		case 5: // logout
+			
+			// get rid of the token
+			SharedPreferences prefs=((Application)getApplication()).getPrefs();
+			prefs.edit().remove("token");
+			prefs.edit().remove("username");
+			prefs.edit().commit();
+			
+
+			// TODO will need to clean up any locally cached data as well
+			
+			this.finish(); // close this activity and return to the previous one
+			
 			break;
 		default:
 			Log.e(LOG_TAG, "Base section selected: "+number);

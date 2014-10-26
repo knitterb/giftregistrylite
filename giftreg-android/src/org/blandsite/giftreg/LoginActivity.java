@@ -10,8 +10,10 @@ import org.apache.http.Header;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class LoginActivity extends Activity {
 	
@@ -34,7 +37,46 @@ public class LoginActivity extends Activity {
 		Resources res = getResources(); //resource handle
 		Drawable drawable = res.getDrawable(R.drawable.gifts1); //new Image that was added to the res folder
 		rLayout.setBackground(drawable);
+		
+		if (((Application)getApplication()).getPrefs().contains("token")) {
+			findViewById(R.id.editTextUsername).setVisibility(View.GONE);
+			findViewById(R.id.editTextPassword).setVisibility(View.GONE);
+			findViewById(R.id.buttonLogin).setVisibility(View.GONE);
+
+			new AsyncTask<Void, Void, Void>() {
+	            @Override
+	            protected Void doInBackground( final Void ... params ) {
+
+	            	try {
+						Thread.sleep(1500);
+						
+
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	                return null;
+	            }
+
+	            @Override
+	            protected void onPostExecute( final Void result ) {
+	                // load up the main screen
+	    			Intent i=new Intent(LoginActivity.this, MainActivity.class);
+	    			startActivity(i);
+	    			
+	    			resetInputsInBackground();
+
+
+	            }
+	        }.execute();
+
+			
+		} else {
+			
+		}
+
 	}
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -94,19 +136,23 @@ public class LoginActivity extends Activity {
 					if (response.has("key") && response.has("username")) {
 						app.token=response.getString("key");
 						app.username=response.getString("username");
+						
+						SharedPreferences.Editor editor=((Application)getApplication()).getPrefs().edit();
+						editor.putString("token", app.token);
+						editor.commit();
+						
 						Intent i=new Intent(LoginActivity.this, MainActivity.class);
 						startActivity(i);
+						
+						resetInputsInBackground();
 					} else {
 						Log.d(LOG_TAG, "Missing token element 'key' and/or 'username'");
-						Button b=(Button) findViewById(R.id.buttonLogin);
-						b.setEnabled(true);
-					}
+						resetInputs();					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					//e.printStackTrace();
 					Log.d(LOG_TAG, "Error processing JSON message", e);
-					Button b=(Button) findViewById(R.id.buttonLogin);
-					b.setEnabled(true);
+					resetInputs();
 				}				
 
 				
@@ -115,8 +161,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 				Log.d(LOG_TAG, "LoginActivity.auth() - onFailure(): "+responseString);
-				Button b=(Button) findViewById(R.id.buttonLogin);
-				b.setEnabled(true);
+				resetInputs();
 				((Application)getApplication()).toast("Invalid username or password");
 			}
 			
@@ -130,6 +175,39 @@ public class LoginActivity extends Activity {
 		return false;
 	}
 	
+	private void resetInputs() {
+    	findViewById(R.id.editTextUsername).setVisibility(View.VISIBLE);
+		findViewById(R.id.editTextPassword).setVisibility(View.VISIBLE);
+		findViewById(R.id.buttonLogin).setVisibility(View.VISIBLE);
+
+		Button b=(Button) findViewById(R.id.buttonLogin);
+		b.setEnabled(true);
+
+	}
+	
+	private void resetInputsInBackground() {
+		new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground( final Void ... params ) {
+
+            	try {
+					Thread.sleep(2000); // arbitrary delay to give the screen time to load
+					
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute( final Void result ) {
+				resetInputs();
+
+            }
+        }.execute();
+
+	}
 	
 	
 }
