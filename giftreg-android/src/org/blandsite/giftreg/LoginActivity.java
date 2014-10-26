@@ -1,5 +1,6 @@
 package org.blandsite.giftreg;
 
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -28,6 +29,7 @@ public class LoginActivity extends Activity {
 	
 	public static final String LOG_TAG="LoginActivity";
 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,6 +41,11 @@ public class LoginActivity extends Activity {
 		rLayout.setBackground(drawable);
 		
 		if (((Application)getApplication()).getPrefs().contains("token")) {
+			
+			((Application)getApplication()).token=((Application)getApplication()).getPrefs().getString("token", null);
+			((Application)getApplication()).username=((Application)getApplication()).getPrefs().getString("username", null);
+
+			
 			findViewById(R.id.editTextUsername).setVisibility(View.GONE);
 			findViewById(R.id.editTextPassword).setVisibility(View.GONE);
 			findViewById(R.id.buttonLogin).setVisibility(View.GONE);
