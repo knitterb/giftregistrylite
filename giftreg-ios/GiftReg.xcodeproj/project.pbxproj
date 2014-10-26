@@ -13,6 +13,10 @@
 		C75E380F19FD5E6A005A7225 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C75E380E19FD5E6A005A7225 /* Images.xcassets */; };
 		C75E381219FD5E6A005A7225 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C75E381019FD5E6A005A7225 /* LaunchScreen.xib */; };
 		C75E381E19FD5E6A005A7225 /* GiftRegTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E381D19FD5E6A005A7225 /* GiftRegTests.swift */; };
+		C7BE582F19FDAC96001155E8 /* gifts1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7BE582E19FDAC96001155E8 /* gifts1.jpg */; };
+		C7BE583119FDAE6F001155E8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BE583019FDAE6F001155E8 /* LoginViewController.swift */; };
+		C7BE583319FDB020001155E8 /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BE583219FDB020001155E8 /* Authentication.swift */; };
+		C7BE583519FDBD19001155E8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BE583419FDBD19001155E8 /* MainViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +40,10 @@
 		C75E381719FD5E6A005A7225 /* GiftRegTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiftRegTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C75E381C19FD5E6A005A7225 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C75E381D19FD5E6A005A7225 /* GiftRegTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftRegTests.swift; sourceTree = "<group>"; };
+		C7BE582E19FDAC96001155E8 /* gifts1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = gifts1.jpg; sourceTree = "<group>"; };
+		C7BE583019FDAE6F001155E8 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		C7BE583219FDB020001155E8 /* Authentication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Authentication.swift; sourceTree = "<group>"; };
+		C7BE583419FDBD19001155E8 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,8 +85,11 @@
 		C75E380419FD5E6A005A7225 /* GiftReg */ = {
 			isa = PBXGroup;
 			children = (
+				C7BE583219FDB020001155E8 /* Authentication.swift */,
 				C75E380719FD5E6A005A7225 /* AppDelegate.swift */,
 				C75E380919FD5E6A005A7225 /* ViewController.swift */,
+				C7BE583019FDAE6F001155E8 /* LoginViewController.swift */,
+				C7BE583419FDBD19001155E8 /* MainViewController.swift */,
 				C75E380B19FD5E6A005A7225 /* Main.storyboard */,
 				C75E380E19FD5E6A005A7225 /* Images.xcassets */,
 				C75E381019FD5E6A005A7225 /* LaunchScreen.xib */,
@@ -90,6 +101,7 @@
 		C75E380519FD5E6A005A7225 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C7BE582E19FDAC96001155E8 /* gifts1.jpg */,
 				C75E380619FD5E6A005A7225 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -195,6 +207,7 @@
 				C75E380D19FD5E6A005A7225 /* Main.storyboard in Resources */,
 				C75E381219FD5E6A005A7225 /* LaunchScreen.xib in Resources */,
 				C75E380F19FD5E6A005A7225 /* Images.xcassets in Resources */,
+				C7BE582F19FDAC96001155E8 /* gifts1.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,8 +225,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7BE583119FDAE6F001155E8 /* LoginViewController.swift in Sources */,
 				C75E380A19FD5E6A005A7225 /* ViewController.swift in Sources */,
 				C75E380819FD5E6A005A7225 /* AppDelegate.swift in Sources */,
+				C7BE583319FDB020001155E8 /* Authentication.swift in Sources */,
+				C7BE583519FDBD19001155E8 /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,6 +423,7 @@
 				C75E382319FD5E6A005A7225 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C75E382419FD5E6A005A7225 /* Build configuration list for PBXNativeTarget "GiftRegTests" */ = {
 			isa = XCConfigurationList;
@@ -415,6 +432,7 @@
 				C75E382619FD5E6A005A7225 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
