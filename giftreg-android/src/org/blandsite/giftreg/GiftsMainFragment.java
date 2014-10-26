@@ -25,10 +25,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
+
 
 public class GiftsMainFragment extends Fragment {
 	
@@ -64,7 +67,9 @@ public class GiftsMainFragment extends Fragment {
 				false);
 		setHasOptionsMenu(true); // call this or the menu won't show up in onCreateOptionsMenu
 		
-		giftList = new ArrayList<HashMap<String, String>>();
+		
+		
+		
 		return rootView;
 	}
 
@@ -84,6 +89,7 @@ public class GiftsMainFragment extends Fragment {
 		// TODO reload from local cache
 		// TODO check local cache version with server version
 		// TODO retrieve remote gifts
+		refresh();
 		
 	}
 	
@@ -115,7 +121,8 @@ public class GiftsMainFragment extends Fragment {
 	
 	private void refresh() {
 		String token = ((Application)getActivity().getApplication()).token;
-		
+		giftList = new ArrayList<HashMap<String, String>>();
+
 		String url="http://10.0.2.2:8888/_ah/api/giftendpoint/v1/gift/"+token;
 		
 		AsyncHttpClient client = new AsyncHttpClient();
@@ -159,6 +166,19 @@ public class GiftsMainFragment extends Fragment {
 						    ListView list = (ListView) getActivity().findViewById(R.id.listViewGifts);
 							list.setAdapter(adapter);
 							
+							list.setOnItemClickListener(new OnItemClickListener() {
+								 
+					            @Override
+					            public void onItemClick(AdapterView<?> parent, View view,
+					                    int position, long id) {
+
+					            	Log.d(LOG_TAG, "onItemClick() "+position);
+					            	Log.d(LOG_TAG, "onItemClick() "+giftList.get(position).get("key"));
+
+					            }
+					        });
+							
+
 							
 						}
 						
