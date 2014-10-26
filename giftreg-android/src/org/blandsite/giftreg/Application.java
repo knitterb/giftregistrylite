@@ -19,7 +19,7 @@ public class Application extends android.app.Application {
 	}
 	
 	public SharedPreferences getPrefs() {
-		 return getSharedPreferences("org.blandsite.giftreg", 0);
+		 return getSharedPreferences("org.blandsite.giftreg", Context.MODE_PRIVATE);
 	}
 	
 }

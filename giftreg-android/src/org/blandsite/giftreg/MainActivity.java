@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -95,9 +96,14 @@ public class MainActivity extends Activity implements
 			
 			// get rid of the token
 			SharedPreferences prefs=((Application)getApplication()).getPrefs();
-			prefs.edit().remove("token");
-			prefs.edit().remove("username");
-			prefs.edit().commit();
+			Editor edit=prefs.edit();
+			edit.putString("token", null);
+			edit.putString("username", null);
+			edit.remove("token");
+			edit.remove("username");
+			Application.token=null;
+			Application.username=null;
+			boolean success=edit.commit();
 			
 
 			// TODO will need to clean up any locally cached data as well
