@@ -49,13 +49,14 @@ public class LoginActivity extends Activity {
 			findViewById(R.id.editTextUsername).setVisibility(View.GONE);
 			findViewById(R.id.editTextPassword).setVisibility(View.GONE);
 			findViewById(R.id.buttonLogin).setVisibility(View.GONE);
+			findViewById(R.id.textViewRegister).setVisibility(View.GONE);
 
 			new AsyncTask<Void, Void, Void>() {
 	            @Override
 	            protected Void doInBackground( final Void ... params ) {
 
 	            	try {
-						Thread.sleep(500);
+						Thread.sleep(1200);
 						
 
 					} catch (InterruptedException e) {
@@ -110,6 +111,10 @@ public class LoginActivity extends Activity {
 		auth();
 	}
 	
+	public void registerTextClicked(View v) {
+		Log.d(LOG_TAG, "Register clicked");
+	}
+	
 	private boolean auth() {
 		EditText eu = (EditText) findViewById(R.id.editTextUsername);
 		EditText ep = (EditText) findViewById(R.id.editTextPassword);
@@ -126,7 +131,7 @@ public class LoginActivity extends Activity {
 		RequestParams params=new RequestParams();
 		
 		Log.d(LOG_TAG, "LoginActivity.auth(): POST - "+url);
-		
+		client.setTimeout(20000); // give it 20s in case we need the server to warm up
 		client.post(this.getApplicationContext(), url, params, new JsonHttpResponseHandler() {
 			
 			@Override
@@ -170,7 +175,17 @@ public class LoginActivity extends Activity {
 			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 				Log.d(LOG_TAG, "LoginActivity.auth() - onFailure(): "+responseString);
 				resetInputs();
-				((Application)getApplication()).toast("Invalid username or password");
+				((Application)getApplication()).toast("Invalid username or password.");
+			}
+			
+			@Override
+			public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject json) {
+				Log.d(LOG_TAG, "LoginActivity.auth() - onFailure(): "+throwable);
+				//throwable.printStackTrace();
+				resetInputs();
+				((Application)getApplication()).toast("Error validing credentials.\n"+throwable.getMessage());
+				//((Application)getApplication()).toast(throwable.getMessage());
+
 			}
 			
 			@Override
@@ -187,6 +202,8 @@ public class LoginActivity extends Activity {
     	findViewById(R.id.editTextUsername).setVisibility(View.VISIBLE);
 		findViewById(R.id.editTextPassword).setVisibility(View.VISIBLE);
 		findViewById(R.id.buttonLogin).setVisibility(View.VISIBLE);
+		findViewById(R.id.textViewRegister).setVisibility(View.VISIBLE);
+
 
 		Button b=(Button) findViewById(R.id.buttonLogin);
 		b.setEnabled(true);

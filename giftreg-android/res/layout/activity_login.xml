@@ -7,51 +7,69 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="org.blandsite.giftreg.LoginActivity" >
+    tools:context="org.blandsite.giftreg.LoginActivity" 
+    
+    
+    >
 
     
-
-  
-
-    <EditText
+        <EditText
         android:id="@+id/editTextUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/editTextPassword"
-        android:layout_alignLeft="@+id/editTextPassword"
-        android:layout_alignRight="@+id/editTextPassword"
+        android:layout_centerHorizontal="true"
+        android:background="#88ffffff"
         android:ems="10"
         android:hint="Username"
-        android:inputType="textEmailAddress" 
-       	android:background="#88ffffff"
-        >
-                <requestFocus />
-        </EditText>
+        android:inputType="textEmailAddress"
+                android:padding="4dp"
         
-  <EditText
+         >
+         <requestFocus></requestFocus>
+        </EditText>
+    <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonLogin"
-        android:layout_centerHorizontal="true"
+        android:layout_alignLeft="@+id/editTextUsername"
+        android:layout_alignRight="@+id/editTextUsername"
+        android:background="#88ffffff"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-               	android:background="#88ffffff"
-        
-         >
-
-    </EditText>
-
+        android:padding="4dp"
+         />
+    
     <Button
         android:id="@+id/buttonLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textViewRegister"
+        android:layout_centerHorizontal="true"
+        android:onClick="loginButtonClicked"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:text="Login" />
+    
+    <TextView
+        android:id="@+id/textViewRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/editTextPassword"
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/editTextPassword"
-        android:layout_marginBottom="20dp"
-        android:onClick="loginButtonClicked"
-        android:text="Login" />
-
+        android:gravity="center"
+        android:paddingTop="10dp"
+        
+        android:text="Don&apos;t have an account?\nTouch here to register."
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#0000FF" 
+        android:clickable="true"
+        android:onClick="registerTextClicked"        
+        />
+    
 </RelativeLayout>

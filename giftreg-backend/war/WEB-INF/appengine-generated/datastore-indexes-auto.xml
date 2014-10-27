@@ -1,4 +1,11 @@
-<!-- Indices written at Sun, 26 Oct 2014 20:07:49 PDT -->
+<!-- Indices written at Sun, 26 Oct 2014 21:29:59 PDT -->
 
-<datastore-indexes/>
+<datastore-indexes>
 
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Gift" ancestor="false" source="auto">
+        <property name="username" direction="asc"/>
+        <property name="ranking" direction="desc"/>
+    </datastore-index>
+
+</datastore-indexes>
