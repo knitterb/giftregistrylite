@@ -42,8 +42,8 @@ public class LoginActivity extends Activity {
 		
 		if (((Application)getApplication()).getPrefs().contains("token")) {
 			
-			((Application)getApplication()).token=((Application)getApplication()).getPrefs().getString("token", null);
-			((Application)getApplication()).username=((Application)getApplication()).getPrefs().getString("username", null);
+			Application.token=((Application)getApplication()).getPrefs().getString("token", null);
+			Application.username=((Application)getApplication()).getPrefs().getString("username", null);
 
 			
 			findViewById(R.id.editTextUsername).setVisibility(View.GONE);
@@ -146,6 +146,7 @@ public class LoginActivity extends Activity {
 						
 						SharedPreferences.Editor editor=((Application)getApplication()).getPrefs().edit();
 						editor.putString("token", app.token);
+						editor.putString("username", app.username);
 						editor.commit();
 						
 						Intent i=new Intent(LoginActivity.this, MainActivity.class);

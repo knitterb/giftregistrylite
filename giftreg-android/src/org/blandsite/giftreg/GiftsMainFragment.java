@@ -196,6 +196,14 @@ public class GiftsMainFragment extends Fragment {
 			@Override
 			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 				Log.d(LOG_TAG, "refresh() - onFailure(): "+responseString);
+				((Application)getActivity().getApplication()).toast("Error retrieving gifts (0)");
+			}
+			
+			@Override
+			public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
+				Log.d(LOG_TAG, "refresh() - onFailure(): "+response);
+				((Application)getActivity().getApplication()).toast("Error retrieving gifts (1)");
+
 			}
 			
 			@Override
