@@ -47,7 +47,7 @@ public class LoginActivity extends Activity {
 
 			
 			findViewById(R.id.editTextUsername).setVisibility(View.GONE);
-			findViewById(R.id.editTextPassword).setVisibility(View.GONE);
+			findViewById(R.id.editTextRegisterPassword).setVisibility(View.GONE);
 			findViewById(R.id.buttonLogin).setVisibility(View.GONE);
 			findViewById(R.id.textViewRegister).setVisibility(View.GONE);
 
@@ -113,11 +113,16 @@ public class LoginActivity extends Activity {
 	
 	public void registerTextClicked(View v) {
 		Log.d(LOG_TAG, "Register clicked");
+		Intent i=new Intent(LoginActivity.this, RegisterActivity.class);
+		startActivity(i);
+		
+		resetInputsInBackground();
+
 	}
 	
 	private boolean auth() {
 		EditText eu = (EditText) findViewById(R.id.editTextUsername);
-		EditText ep = (EditText) findViewById(R.id.editTextPassword);
+		EditText ep = (EditText) findViewById(R.id.editTextRegisterPassword);
 		
 		String u=eu.getText().toString();
 		String p=ep.getText().toString();
@@ -200,7 +205,7 @@ public class LoginActivity extends Activity {
 	
 	private void resetInputs() {
     	findViewById(R.id.editTextUsername).setVisibility(View.VISIBLE);
-		findViewById(R.id.editTextPassword).setVisibility(View.VISIBLE);
+		findViewById(R.id.editTextRegisterPassword).setVisibility(View.VISIBLE);
 		findViewById(R.id.buttonLogin).setVisibility(View.VISIBLE);
 		findViewById(R.id.textViewRegister).setVisibility(View.VISIBLE);
 

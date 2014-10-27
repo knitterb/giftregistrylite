@@ -17,7 +17,7 @@
         android:id="@+id/editTextUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/editTextPassword"
+        android:layout_above="@+id/editTextRegisterPassword"
         android:layout_centerHorizontal="true"
         android:background="#88ffffff"
         android:ems="10"
@@ -29,7 +29,7 @@
          <requestFocus></requestFocus>
         </EditText>
     <EditText
-        android:id="@+id/editTextPassword"
+        android:id="@+id/editTextRegisterPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonLogin"
@@ -59,9 +59,9 @@
         android:id="@+id/textViewRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editTextPassword"
+        android:layout_alignLeft="@+id/editTextRegisterPassword"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/editTextPassword"
+        android:layout_alignRight="@+id/editTextRegisterPassword"
         android:gravity="center"
         android:paddingTop="10dp"
         
