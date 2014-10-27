@@ -18,6 +18,11 @@ public class Application extends android.app.Application {
 		toast.show();
 	}
 	
+	public void toastLong (String message) {
+		Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+		toast.show();
+	}
+	
 	public SharedPreferences getPrefs() {
 		 return getSharedPreferences("org.blandsite.giftreg", Context.MODE_PRIVATE);
 	}

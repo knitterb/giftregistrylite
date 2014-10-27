@@ -175,7 +175,7 @@ public class LoginActivity extends Activity {
 			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 				Log.d(LOG_TAG, "LoginActivity.auth() - onFailure(): "+responseString);
 				resetInputs();
-				((Application)getApplication()).toast("Invalid username or password.");
+				((Application)getApplication()).toastLong("Invalid username or password.");
 			}
 			
 			@Override
@@ -183,7 +183,7 @@ public class LoginActivity extends Activity {
 				Log.d(LOG_TAG, "LoginActivity.auth() - onFailure(): "+throwable);
 				//throwable.printStackTrace();
 				resetInputs();
-				((Application)getApplication()).toast("Error validing credentials.\n"+throwable.getMessage());
+				((Application)getApplication()).toastLong("Error validing credentials.\n"+throwable.getMessage());
 				//((Application)getApplication()).toast(throwable.getMessage());
 
 			}
