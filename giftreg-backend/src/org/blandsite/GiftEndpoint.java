@@ -119,8 +119,15 @@ public class GiftEndpoint {
 				if (containsGift(gift)) {
 					throw new EntityExistsException("Object already exists");
 				}
+				// persist the gift so that we have a key
+				//gift.setUsername(t.getUsername());
+				mgr.makePersistent(gift);
+
+				// add the gift to the user now that we have a key
 				User u=mgr.getObjectById(User.class, t.getUsername());
-				u.addGift(gift);
+				u.addGift(gift); // this also will now add the username to the gift so we have to persist both again
+
+				// persist both objects again
 				ArrayList a=new ArrayList();
 				a.add(u);
 				a.add(gift);
